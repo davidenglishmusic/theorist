@@ -55,8 +55,6 @@ defmodule Theorist do
     [3, 6, 9] => :diminished_seventh
   }
 
-  @octave_number 12
-
   def pitch_to_number(lettered_pitch) do
     @pitch_mapping[lettered_pitch]
   end
@@ -87,16 +85,21 @@ defmodule Theorist do
     pitch.number + pitch.octave * 12
   end
 
-  def stack_pitch_numbers(pitch_numbers) do
-    do_stack_pitch_numbers(pitch_numbers, 0)
+  def stack_pitches_relatively(pitches) do
+    do_stack_pitches_relatively(pitches, 0)
   end
 
-  defp do_stack_pitch_numbers([head | tail], current_offset) do
+  defp do_stack_pitches_relatively([head | tail], current_offset) do
     next_offset =
-      if head > List.first(tail), do: current_offset + @octave_number, else: current_offset
+      if tail != [] && head.number > List.first(tail).number,
+        do: current_offset + 1,
+        else: current_offset
 
-    [head + current_offset | do_stack_pitch_numbers(tail, next_offset)]
+    [
+      %Pitch{number: head.number, octave: current_offset}
+      | do_stack_pitches_relatively(tail, next_offset)
+    ]
   end
 
-  defp do_stack_pitch_numbers([], _current_offset), do: []
+  defp do_stack_pitches_relatively([], _current_offset), do: []
 end

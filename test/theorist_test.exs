@@ -40,10 +40,34 @@ defmodule TheoristTest do
              3
   end
 
-  test "stack_pitch_numbers" do
-    assert Theorist.stack_pitch_numbers([2, 6, 9]) == [2, 6, 9]
-    assert Theorist.stack_pitch_numbers([6, 2, 9]) == [6, 14, 21]
-    assert Theorist.stack_pitch_numbers([11, 5, 1]) == [11, 17, 25]
-    assert Theorist.stack_pitch_numbers([11, 1, 3]) == [11, 13, 15]
+  test "stacks pitch numbers relative to the first" do
+    d_zero = %Pitch{number: 2, octave: 0}
+    f_sharp_zero = %Pitch{number: 6, octave: 0}
+    a_zero = %Pitch{number: 9, octave: 0}
+
+    absolutes_for_test_one =
+      Enum.map(Theorist.stack_pitches_relatively([d_zero, f_sharp_zero, a_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert absolutes_for_test_one == [2, 6, 9]
+
+    absolutes_for_test_two =
+      Enum.map(Theorist.stack_pitches_relatively([f_sharp_zero, d_zero, a_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert absolutes_for_test_two == [6, 14, 21]
+
+    b_zero = %Pitch{number: 11, octave: 0}
+    f_zero = %Pitch{number: 5, octave: 0}
+    c_sharp_zero = %Pitch{number: 1, octave: 0}
+
+    absolutes_for_test_three =
+      Enum.map(Theorist.stack_pitches_relatively([b_zero, f_zero, c_sharp_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert absolutes_for_test_three == [11, 17, 25]
   end
 end

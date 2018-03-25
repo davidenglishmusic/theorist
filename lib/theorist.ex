@@ -102,4 +102,19 @@ defmodule Theorist do
   end
 
   defp do_stack_pitches_relatively([], _current_offset), do: []
+
+  def pitch_stack_intervals(pitches) do
+    do_pitch_stack_intervals(pitches) |> Enum.filter(& &1)
+  end
+
+  defp do_pitch_stack_intervals([head | tail]) do
+    interval =
+      if tail != [],
+        do: absolute_pitch_number(List.first(tail)) - absolute_pitch_number(head),
+        else: nil
+
+    [interval | do_pitch_stack_intervals(tail)]
+  end
+
+  defp do_pitch_stack_intervals([]), do: []
 end

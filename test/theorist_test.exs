@@ -78,4 +78,45 @@ defmodule TheoristTest do
 
     assert Theorist.pitch_stack_intervals([d_zero, f_sharp_zero, a_zero]) == [4, 3]
   end
+
+  test "finds the most compact pitch stack" do
+    d_zero = %Pitch{number: 2, octave: 0}
+    f_sharp_zero = %Pitch{number: 6, octave: 0}
+    a_zero = %Pitch{number: 9, octave: 0}
+
+    test_a_absolutes =
+      Enum.map(Theorist.compact_pitch_stack([d_zero, f_sharp_zero, a_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert test_a_absolutes == [2, 6, 9]
+
+    test_b_absolutes =
+      Enum.map(Theorist.compact_pitch_stack([f_sharp_zero, a_zero, d_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert test_b_absolutes == [2, 6, 9]
+
+    b_two = %Pitch{number: 11, octave: 2}
+
+    test_c_absolutes =
+      Enum.map(Theorist.compact_pitch_stack([f_sharp_zero, b_two, d_zero]), fn pitch ->
+        Theorist.absolute_pitch_number(pitch)
+      end)
+
+    assert test_c_absolutes == [11, 14, 18]
+
+    c_sharp_zero = %Pitch{number: 1, octave: 0}
+
+    test_d_absolutes =
+      Enum.map(
+        Theorist.compact_pitch_stack([f_sharp_zero, a_zero, d_zero, c_sharp_zero]),
+        fn pitch ->
+          Theorist.absolute_pitch_number(pitch)
+        end
+      )
+
+    assert test_d_absolutes == [2, 6, 9, 13]
+  end
 end

@@ -117,4 +117,17 @@ defmodule Theorist do
   end
 
   defp do_pitch_stack_intervals([]), do: []
+
+  def compact_pitch_stack(pitches) do
+    Utility.permutations(pitches)
+    |> Enum.map(fn pitches ->
+      stack_pitches_relatively(pitches)
+    end)
+    |> Enum.filter(fn pitches ->
+      !Enum.member?(pitch_stack_intervals(pitches), 1)
+    end)
+    |> Enum.min_by(fn pitches ->
+      absolute_pitch_number(List.last(pitches)) - absolute_pitch_number(List.first(pitches))
+    end)
+  end
 end

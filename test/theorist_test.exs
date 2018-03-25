@@ -45,29 +45,29 @@ defmodule TheoristTest do
     f_sharp_zero = %Pitch{number: 6, octave: 0}
     a_zero = %Pitch{number: 9, octave: 0}
 
-    absolutes_for_test_one =
+    test_a_absolutes =
       Enum.map(Theorist.stack_pitches_relatively([d_zero, f_sharp_zero, a_zero]), fn pitch ->
         Theorist.absolute_pitch_number(pitch)
       end)
 
-    assert absolutes_for_test_one == [2, 6, 9]
+    assert test_a_absolutes == [2, 6, 9]
 
-    absolutes_for_test_two =
+    test_b_absolutes =
       Enum.map(Theorist.stack_pitches_relatively([f_sharp_zero, d_zero, a_zero]), fn pitch ->
         Theorist.absolute_pitch_number(pitch)
       end)
 
-    assert absolutes_for_test_two == [6, 14, 21]
+    assert test_b_absolutes == [6, 14, 21]
 
     b_zero = %Pitch{number: 11, octave: 0}
     f_zero = %Pitch{number: 5, octave: 0}
     c_sharp_zero = %Pitch{number: 1, octave: 0}
 
-    absolutes_for_test_three =
+    test_c_absolutes =
       Enum.map(Theorist.stack_pitches_relatively([b_zero, f_zero, c_sharp_zero]), fn pitch ->
         Theorist.absolute_pitch_number(pitch)
       end)
 
-    assert absolutes_for_test_three == [11, 17, 25]
+    assert test_c_absolutes == [11, 17, 25]
   end
 end

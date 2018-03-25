@@ -70,4 +70,12 @@ defmodule TheoristTest do
 
     assert test_c_absolutes == [11, 17, 25]
   end
+
+  test "returns the intervals of a pitch stack" do
+    d_zero = %Pitch{number: 2, octave: 0}
+    f_sharp_zero = %Pitch{number: 6, octave: 0}
+    a_zero = %Pitch{number: 9, octave: 0}
+
+    assert Theorist.pitch_stack_intervals([d_zero, f_sharp_zero, a_zero]) == [4, 3]
+  end
 end
